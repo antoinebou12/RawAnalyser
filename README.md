@@ -1,5 +1,5 @@
 # RawAnalyser
-## SIMPLE PRECISE PAN-TILT CONTROLLER FOR PTU-46-17.5
+## Simple RawAnalyser for black and white clipping, gamma calculation, flatness with vignette (algolux)
 ### Requirement libary
     -Python 2.7
     -json
@@ -12,6 +12,7 @@
     -logging
 	
 ### Run the program 
+	python RawAnalyser.py -h
 	python RawAnalyser.py -f <pathfolder> -p <pointfile>
 	python GUI.py
 
