@@ -23,8 +23,9 @@ class NewAnalyse(FileSystemEventHandler):
     def on_created(self, event):
         global numFile
         global newFile
-        newFile = event.src_path
-        print event.src_path
+        if event.src_path[-3:] == 'raw':
+            newFile = event.src_path
+            print newFile
         numFile=numFile+1
         with open(pointfile, 'r') as f:
             point = json.load(f)
