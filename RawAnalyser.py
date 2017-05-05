@@ -94,7 +94,7 @@ class NewAnalyse(FileSystemEventHandler):
         matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
         matrix = np.array(matrix)
         matrix = np.reshape(image_array, (1088, 1928))
-        tiff.imsave('tiff/' + str(numFile) + '.tiff', matrix )
+        tiff.imsave('tiff/'+ str(newFile) + str(numFile) + '.tiff', matrix )
                 # Dead Pixel
 
         #Write in text file the list
