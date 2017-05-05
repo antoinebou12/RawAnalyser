@@ -9,7 +9,7 @@ import cv2
 from scipy.misc import imsave
 import PIL.Image as Image
 from PIL import *
-import tifffile
+import tifffile as tiff
 
 
 import plotly
@@ -82,7 +82,7 @@ class NewAnalyse(FileSystemEventHandler):
         # raw to tiff
         image = Image.frombytes("I", [1928, 1088], image_array.astype('I'), 'raw', 'I', 0, 1)
 
-        imsave('tiff/' + str(numFile) + '.tiff', image)
+
 
         #Matrix 2d of the image
         global cols_count
@@ -94,6 +94,7 @@ class NewAnalyse(FileSystemEventHandler):
         matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
         matrix = np.array(matrix)
         matrix = np.reshape(image_array, (1088, 1928))
+        tiff.imsave('tiff/' + str(numFile) + '.tiff', matrix )
                 # Dead Pixel
 
         #Write in text file the list
@@ -473,7 +474,7 @@ class NewAnalyse(FileSystemEventHandler):
             plt.hist(np.array(matrix.ravel()), bins=1024, range=(np.array(matrix.ravel()).min(), np.array(matrix.ravel()).max()))
             plt.title('Histogram')
             fig = plt.gcf()
-            plot_url = py.plot_mpl(fig, filename='HistogramRaw', height=np.array(matrix.ravel()).max())
+            #plot_url = py.plot_mpl(fig, filename='HistogramRaw', height=np.array(matrix.ravel()).max())
             # Convert to plotly figure
             plotly_fig = tls.mpl_to_plotly(fig)
             global numFile
