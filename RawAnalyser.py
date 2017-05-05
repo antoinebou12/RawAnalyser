@@ -88,7 +88,6 @@ class NewAnalyse(FileSystemEventHandler):
         rows_count = 1088
 
         matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
-        matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
         matrix = np.array(matrix)
         matrix = np.reshape(image_array, (1088, 1928))
         # raw to tiff
