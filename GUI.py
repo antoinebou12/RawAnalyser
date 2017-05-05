@@ -66,6 +66,8 @@ class FormWidget(QWidget):
             imsave('tiff/raw.tiff', image)
             time.sleep(1)
             self.pix = QPixmap('tiff/raw.tiff')
+            self.text = 'first ROI'
+            self.setToolTip(self.text)
 
 
 
@@ -75,10 +77,14 @@ class FormWidget(QWidget):
         self.image.mousePressEvent = self.getPos
         self.num =0
         self.feeds = {
+            'gray_first_x': 1,
+            'gray_first_y': 1,
             'first_x': 1,
             'first_y': 1,
-            'last_x' : 1928,
-            'last_y' : 1088
+            'last_x': 1928,
+            'last_y': 1088,
+            'gray_last_x':1,
+            'gray_last_y':1
         }
 
     def getPos(self, event):
@@ -88,13 +94,22 @@ class FormWidget(QWidget):
         print y
         self.num=self.num+1
         with open('json/points.json','w') as f:
-            if self.num % 2 == 1:
+            if self.num % 4 == 1:
                 self.feeds['first_x'] = x
                 self.feeds['first_y'] = y
-            elif self.num % 2 == 0:
+                self.text = 'last ROI'
+            elif self.num % 4 == 2:
                 self.feeds['last_x'] = x
                 self.feeds['last_y'] = y
-
+                self.text = 'first Gray'
+            elif self.num % 4 == 3:
+                self.feeds['gray_first_x'] = x
+                self.feeds['gray_first_y'] = y
+                self.text = 'last Gray'
+            elif self.num % 4 == 0:
+                self.feeds['gray_last_x'] = x
+                self.feeds['gray_last_y'] = y
+                self.text = 'first ROI'
             json.dump(self.feeds, f)
 
 def main():
