@@ -1,14 +1,19 @@
-from PIL import Image
-import numpy as np
-import time
+
 import sys, os, random, json
+import time
+from win32api import GetSystemMetrics
+from os.path import basename 
+import tifffile as tiff
+
+import numpy as np
+from PIL.ImageQt import ImageQt
+
 from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QWidget, QFileDialog, QLineEdit, QPushButton, QLabel, QColumnView, QFileSystemModel,QSplitter, QTreeView, QListView
 from PyQt5.QtGui import QIcon,QPixmap
 from PyQt5.QtCore import QDir, Qt
-from win32api import GetSystemMetrics
-from PIL.ImageQt import ImageQt
-from scipy.misc import imsave
-import PIL.Image as Image
+
+
+
 
 
 widthScreen = GetSystemMetrics(0)
@@ -62,10 +67,14 @@ class FormWidget(QWidget):
         elif name[-3:]=='raw':
             f = open(self.fname[0], "rb")
             image_array = np.fromfile(f, dtype=np.uint16, count=1928 * 1088)
-            image = Image.frombuffer("I", [1928, 1088], image_array.astype('I'), 'raw', 'I', 0, 1)
-            imsave('tiff/raw.tiff', image)
+            
+            matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
+            matrix = np.array(matrix)
+            matrix = np.reshape(image_array, (1088, 1928))
+            # raw to tiff
+            tiff.imsave('tiff/'+ basename(name) +'raw.tiff', matrix)
             time.sleep(1)
-            self.pix = QPixmap('tiff/raw.tiff')
+            self.pix = QPixmap('tiff/'+ basename(name) +'raw.tiff')
             self.text = 'first ROI'
             self.setToolTip(self.text)
 
