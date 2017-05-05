@@ -2,6 +2,7 @@ import sys, os
 import json
 #import winsound
 import time
+from os.path import basename
 
 
 import numpy as np
@@ -79,11 +80,7 @@ class NewAnalyse(FileSystemEventHandler):
         image_array = np.fromfile(f, dtype=np.uint16, count=1928 * 1088)
         #for item in image_array:
         #    thefileArray.write("%s\n" % item)
-        # raw to tiff
-        image = Image.frombytes("I", [1928, 1088], image_array.astype('I'), 'raw', 'I', 0, 1)
-
-
-
+        
         #Matrix 2d of the image
         global cols_count
         global rows_count
@@ -94,8 +91,13 @@ class NewAnalyse(FileSystemEventHandler):
         matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
         matrix = np.array(matrix)
         matrix = np.reshape(image_array, (1088, 1928))
-        tiff.imsave('tiff/'+ str(newFile) + str(numFile) + '.tiff', matrix )
-                # Dead Pixel
+        # raw to tiff
+        tiff.imsave('tiff/'+ str(basename(newFile))  + str(numFile) + '.tiff', matrix )
+        # Dead Pixel
+        #for j in range(0,1088)
+        #    for i in range(0,1928)
+        #        if image_array[j][i] == 0:
+        #            print "dead pixel at " + "x: " + str(j) + " y: " +str(i)
 
         #Write in text file the list
         #for item in matrix:
@@ -314,6 +316,8 @@ class NewAnalyse(FileSystemEventHandler):
             print (( (((-np.log10(((((sum(map(sum, white)))/float((np.count_nonzero(np.array(white)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral8))) / float((np.count_nonzero(np.array(neutral8)))))/ 256)/255))))/-0.1660817663) + (((-np.log10(((((sum(map(sum, neutral8)))/float((np.count_nonzero(np.array(neutral8)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral65))) / float((np.count_nonzero(np.array(neutral65)))))/ 256)/255))))/-0.2056390617) + (((-np.log10(((((sum(map(sum, neutral65)))/float((np.count_nonzero(np.array(neutral65)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral5))) / float((np.count_nonzero(np.array(neutral5)))))/ 256)/255))))/-0.2835423157) +(((-np.log10(((((sum(map(sum, neutral5)))/float((np.count_nonzero(np.array(neutral5)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral35))) / float((np.count_nonzero(np.array(neutral35)))))/ 256)/255))))/-0.3494155563))/4)
 
         def vignette():
+            global numFile
+            global newFile
             print """           
  __      ___                  _   _       
  \ \    / (_)                | | | |      
@@ -334,8 +338,7 @@ class NewAnalyse(FileSystemEventHandler):
             vignetteMatrix = matrixVig/vig
             vignetteMatrix = vignetteMatrix
             Image_arrayVig=np.reshape(np.array(vignetteMatrix),(1928*1088,1))
-            imageVig = Image.frombytes("I", [1928, 1088], Image_arrayVig.astype('I'), 'raw', 'I', 0, 1)
-            imsave('tiff/' + 'vig' + '.tiff', imageVig)
+            tiff.imsave('tiff/' + str(basename(newFile)) + 'vig' + str(numFile) + '.tiff', imageVig )
 
             cropMatrixVig = [[0 for x in range(cols_count)] for y in range(rows_count)]
             for xCrop in range(point['first_x'], point['last_x'], 1):
@@ -470,6 +473,8 @@ class NewAnalyse(FileSystemEventHandler):
             print (( (((-np.log10(((((sum(map(sum, whiteVig)))/float((np.count_nonzero(np.array(whiteVig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral8Vig))) / float((np.count_nonzero(np.array(neutral8Vig)))))/ 256)/255))))/-0.1660817663) + (((-np.log10(((((sum(map(sum, neutral8Vig)))/float((np.count_nonzero(np.array(neutral8Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral65Vig))) / float((np.count_nonzero(np.array(neutral65Vig)))))/ 256)/255))))/-0.2056390617) + (((-np.log10(((((sum(map(sum, neutral65Vig)))/float((np.count_nonzero(np.array(neutral65Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral5Vig))) / float((np.count_nonzero(np.array(neutral5Vig)))))/ 256)/255))))/-0.2835423157) +(((-np.log10(((((sum(map(sum, neutral5Vig)))/float((np.count_nonzero(np.array(neutral5Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral35Vig))) / float((np.count_nonzero(np.array(neutral35Vig)))))/ 256)/255))))/-0.3494155563))/4)
 
         def histogram():
+            global numFile
+            global newFile
             global matrix
             plt.hist(np.array(matrix.ravel()), bins=1024, range=(np.array(matrix.ravel()).min(), np.array(matrix.ravel()).max()))
             plt.title('Histogram')
@@ -478,7 +483,7 @@ class NewAnalyse(FileSystemEventHandler):
             # Convert to plotly figure
             plotly_fig = tls.mpl_to_plotly(fig)
             global numFile
-            py.image.save_as(plotly_fig, 'histogram/histogram' + str(numFile) + '.png')
+            py.image.save_as(plotly_fig, 'histogram/'+ str(basename(newFile)) + histogram' + str(numFile) + '.png')
 
 
 
