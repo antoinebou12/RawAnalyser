@@ -1,3 +1,37 @@
+import sys, os
+import json
+#import winsound
+import time
+
+
+import numpy as np
+import cv2
+from scipy.misc import imsave
+import PIL.Image as Image
+from PIL import *
+import tifffile
+
+
+import plotly
+plotly.tools.set_credentials_file(username='antoine13', api_key='DZN51FyyaBILK1Ie1InJ')
+from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+from plotly.graph_objs import Scatter, Figure, Layout, Histogram
+import plotly.tools as tls
+import plotly.plotly as py
+import matplotlib.pyplot as plt
+
+
+
+
+import colorama
+import logging
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+import argparse
+import argcomplete
+
+
 # _______________________________________________________________________________________________
 #
 # This python file doesn't use pep8 convention
@@ -8,25 +42,15 @@
 #______________________________________________________________________________________________
 
 
-import sys,os, getopt, json, winsound, time
 
-import numpy as np
-from scipy.misc import imsave
-import PIL.Image as Image
-from PIL import *
-import plotly
-plotly.tools.set_credentials_file(username='antoine13', api_key='DZN51FyyaBILK1Ie1InJ')
-import plotly.plotly as py
-import plotly.graph_objs as go
-import colorama
 
-import logging
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+# Disable
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
 
-import argparse
-import argcomplete
-
+# Restore
+def enablePrint():
+    sys.stdout = sys.__stdout__
 
 
 
@@ -51,7 +75,7 @@ class NewAnalyse(FileSystemEventHandler):
         #thefileChannelG = open('array/G.txt', 'w')
         #thefileChannelB = open('array/B.txt', 'w')
         #thefileChannelR = open('array/R.txt', 'w')
-
+        global matrix
         image_array = np.fromfile(f, dtype=np.uint16, count=1928 * 1088)
         #for item in image_array:
         #    thefileArray.write("%s\n" % item)
@@ -255,12 +279,12 @@ class NewAnalyse(FileSystemEventHandler):
                     blackR[h][w] = GrayR[newY][newX + 5 * newPatche]
 
             print """
-                   _____                                     
-                  / ____|                                    
-                 | |  __   __ _  _ __ ___   _ __ ___    __ _ 
-                 | | |_ | / _` || '_ ` _ \ | '_ ` _ \  / _` |
-                 | |__| || (_| || | | | | || | | | | || (_| |
-                  \_____| \__,_||_| |_| |_||_| |_| |_| \__,_|
+ _____                                     
+/ ____|                                    
+| |  __   __ _  _ __ ___   _ __ ___    __ _ 
+| | |_ | / _` || '_ ` _ \ | '_ ` _ \  / _` |
+| |__| || (_| || | | | | || | | | | || (_| |
+ \_____| \__,_||_| |_| |_||_| |_| |_| \__,_|
                                                        """
 
             #print 'white ' + str(((sum(map(sum, white)))/(np.count_nonzero(np.array(white))))/256) + ' Blue ' + str(((sum(map(sum, whiteB)))/(np.count_nonzero(np.array(whiteB))))/256) + ' Green ' + str(((sum(map(sum, whiteG)))/(np.count_nonzero(np.array(whiteG))))/256) + ' Red ' + str(((sum(map(sum, whiteR)))/(np.count_nonzero(np.array(whiteR))))/256)
@@ -287,12 +311,22 @@ class NewAnalyse(FileSystemEventHandler):
             #print str(((-np.log10(((((sum(map(sum, neutral5)))/float((np.count_nonzero(np.array(neutral5)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral35))) / float((np.count_nonzero(np.array(neutral35)))))/ 256)/255))))/-0.3494155563)
 
             print (( (((-np.log10(((((sum(map(sum, white)))/float((np.count_nonzero(np.array(white)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral8))) / float((np.count_nonzero(np.array(neutral8)))))/ 256)/255))))/-0.1660817663) + (((-np.log10(((((sum(map(sum, neutral8)))/float((np.count_nonzero(np.array(neutral8)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral65))) / float((np.count_nonzero(np.array(neutral65)))))/ 256)/255))))/-0.2056390617) + (((-np.log10(((((sum(map(sum, neutral65)))/float((np.count_nonzero(np.array(neutral65)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral5))) / float((np.count_nonzero(np.array(neutral5)))))/ 256)/255))))/-0.2835423157) +(((-np.log10(((((sum(map(sum, neutral5)))/float((np.count_nonzero(np.array(neutral5)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral35))) / float((np.count_nonzero(np.array(neutral35)))))/ 256)/255))))/-0.3494155563))/4)
-            print ' '
 
         def vignette():
+            print """           
+ __      ___                  _   _       
+ \ \    / (_)                | | | |      
+  \ \  / / _  __ _ _ __   ___| |_| |_ ___ 
+   \ \/ / | |/ _` | '_ \ / _ \ __| __/ _  
+    \  /  | | (_| | | | |  __/ |_| ||  __/
+     \/   |_|\__, |_| |_|\___|\__|\__\___|
+              __/ |                       
+             |___/                                   """
             global squareLength
             matrixVig = [[0 for x in range(cols_count)] for y in range(rows_count)]
-            vig = np.load(args.vignette)
+            blockPrint()
+            vig = np.load(args.vignette);
+            enablePrint()
             for i in range(0,1928):
                 for j in range(0,1088):
                     matrixVig[j][i] = float(matrix[j][i] - args.bl)
@@ -431,19 +465,19 @@ class NewAnalyse(FileSystemEventHandler):
                     blackVig24[hFlat][wFlat] = blackVig[hFlat+newQuad][wFlat+newQuad]
 
 
-
+           # print ((np.array(whiteVig1)/(np.array(whiteVig2)))/(np.array(whiteVig3)/(np.array(whiteVig4))))
             print (( (((-np.log10(((((sum(map(sum, whiteVig)))/float((np.count_nonzero(np.array(whiteVig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral8Vig))) / float((np.count_nonzero(np.array(neutral8Vig)))))/ 256)/255))))/-0.1660817663) + (((-np.log10(((((sum(map(sum, neutral8Vig)))/float((np.count_nonzero(np.array(neutral8Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral65Vig))) / float((np.count_nonzero(np.array(neutral65Vig)))))/ 256)/255))))/-0.2056390617) + (((-np.log10(((((sum(map(sum, neutral65Vig)))/float((np.count_nonzero(np.array(neutral65Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral5Vig))) / float((np.count_nonzero(np.array(neutral5Vig)))))/ 256)/255))))/-0.2835423157) +(((-np.log10(((((sum(map(sum, neutral5Vig)))/float((np.count_nonzero(np.array(neutral5Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral35Vig))) / float((np.count_nonzero(np.array(neutral35Vig)))))/ 256)/255))))/-0.3494155563))/4)
 
-
-
-
-
-
-
-
-
-
-
+        def histogram():
+            global matrix
+            plt.hist(np.array(matrix.ravel()), bins=1024, range=(np.array(matrix.ravel()).min(), np.array(matrix.ravel()).max()))
+            plt.title('Histogram')
+            fig = plt.gcf()
+            plot_url = py.plot_mpl(fig, filename='HistogramRaw', height=np.array(matrix.ravel()).max())
+            # Convert to plotly figure
+            plotly_fig = tls.mpl_to_plotly(fig)
+            global numFile
+            py.image.save_as(plotly_fig, 'histogram/histogram' + str(numFile) + '.png')
 
 
 
@@ -453,10 +487,20 @@ class NewAnalyse(FileSystemEventHandler):
             clipping()
         elif args.func == 'vignette':
             vignette()
+        elif args.func == 'histogram':
+            histogram()
+        elif args.func == 'noHist':
+            clipping()
+            gamma()
+            vignette()
+        elif args.func == 'basic':
+            clipping()
+            gamma()
         elif args.func == 'all':
             clipping()
             gamma()
             vignette()
+            histogram()
 
 
 
