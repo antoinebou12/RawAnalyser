@@ -337,7 +337,7 @@ class NewAnalyse(FileSystemEventHandler):
             vignetteMatrix = matrixVig/vig
             vignetteMatrix = vignetteMatrix
             Image_arrayVig=np.reshape(np.array(vignetteMatrix),(1928*1088,1))
-            tiff.imsave('tiff/' + str(basename(newFile)) + 'vig' + str(numFile) + '.tiff', imageVig )
+            tiff.imsave('tiff/' + str(basename(newFile)) + 'vig' + str(numFile) + '.tiff', Image_arrayVig )
 
             cropMatrixVig = [[0 for x in range(cols_count)] for y in range(rows_count)]
             for xCrop in range(point['first_x'], point['last_x'], 1):
@@ -468,7 +468,10 @@ class NewAnalyse(FileSystemEventHandler):
                     blackVig24[hFlat][wFlat] = blackVig[hFlat+newQuad][wFlat+newQuad]
 
 
-           # print ((np.array(whiteVig1)/(np.array(whiteVig2)))/(np.array(whiteVig3)/(np.array(whiteVig4))))
+            print 'white1 ' + str(((sum(map(sum, whiteVig1))) / (np.count_nonzero(np.array(whiteVig4)))) / 256)
+            print 'white2 ' + str(((sum(map(sum, whiteVig2))) / (np.count_nonzero(np.array(whiteVig2)))) / 256)
+            print 'white3 ' + str(((sum(map(sum, whiteVig3))) / (np.count_nonzero(np.array(whiteVig3)))) / 256)
+            print 'white4 ' + str(((sum(map(sum, whiteVig4))) / (np.count_nonzero(np.array(whiteVig4)))) / 256)
             print (( (((-np.log10(((((sum(map(sum, whiteVig)))/float((np.count_nonzero(np.array(whiteVig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral8Vig))) / float((np.count_nonzero(np.array(neutral8Vig)))))/ 256)/255))))/-0.1660817663) + (((-np.log10(((((sum(map(sum, neutral8Vig)))/float((np.count_nonzero(np.array(neutral8Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral65Vig))) / float((np.count_nonzero(np.array(neutral65Vig)))))/ 256)/255))))/-0.2056390617) + (((-np.log10(((((sum(map(sum, neutral65Vig)))/float((np.count_nonzero(np.array(neutral65Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral5Vig))) / float((np.count_nonzero(np.array(neutral5Vig)))))/ 256)/255))))/-0.2835423157) +(((-np.log10(((((sum(map(sum, neutral5Vig)))/float((np.count_nonzero(np.array(neutral5Vig)))))/256)/255)))- (-np.log10(((((sum(map(sum, neutral35Vig))) / float((np.count_nonzero(np.array(neutral35Vig)))))/ 256)/255))))/-0.3494155563))/4)
 
         def histogram():
