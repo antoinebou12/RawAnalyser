@@ -482,7 +482,7 @@ class NewAnalyse(FileSystemEventHandler):
             # Convert to plotly figure
             plotly_fig = tls.mpl_to_plotly(fig)
             global numFile
-            py.image.save_as(plotly_fig, 'histogram/'+ str(basename(newFile)) + histogram' + str(numFile) + '.png')
+            py.image.save_as(plotly_fig, 'histogram/'+ str(basename(newFile)) + 'histogram' + str(numFile) + '.png')
 
 
 
