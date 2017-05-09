@@ -98,18 +98,22 @@ class FormWidget(QWidget):
                 self.feeds['first_x'] = x
                 self.feeds['first_y'] = y
                 self.text = 'last ROI'
+                self.setToolTip(self.text)
             elif self.num % 4 == 2:
                 self.feeds['last_x'] = x
                 self.feeds['last_y'] = y
                 self.text = 'first Gray'
+                self.setToolTip(self.text)
             elif self.num % 4 == 3:
                 self.feeds['gray_first_x'] = x
                 self.feeds['gray_first_y'] = y
                 self.text = 'last Gray'
+                self.setToolTip(self.text)
             elif self.num % 4 == 0:
                 self.feeds['gray_last_x'] = x
                 self.feeds['gray_last_y'] = y
                 self.text = 'first ROI'
+                self.setToolTip(self.text)
             json.dump(self.feeds, f)
 
 def main():
