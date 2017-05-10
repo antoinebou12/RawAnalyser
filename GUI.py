@@ -1,16 +1,12 @@
-import sys, os, random, json
+import sys, os, json
 import time
 from win32api import GetSystemMetrics
 from os.path import basename
 import tifffile as tiff
-
 import numpy as np
-from PIL.ImageQt import ImageQt
-
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QWidget, QFileDialog, QLineEdit, QPushButton, \
-    QLabel, QColumnView, QFileSystemModel, QSplitter, QTreeView, QListView
-from PyQt5.QtGui import QIcon, QPixmap,QMouseEvent
-from PyQt5.QtCore import QDir, Qt, QEvent
+from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QWidget, QFileDialog, QLabel
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtCore import Qt, QEvent
 
 widthScreen = GetSystemMetrics(0)
 heightScreen = GetSystemMetrics(1)
@@ -98,10 +94,10 @@ class FormWidget(QWidget):
             if event.buttons() == Qt.NoButton:
                 global position
                 position = event.pos()
-                print ''
-                print position.x()
-                print position.y()
-                print ''
+                #print ''
+                #print position.x()
+                #print position.y()
+                #print ''
                 self.text = self.point  + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(
                     matrix[position.y()][position.x()] / 64)
                 self.setToolTip(self.text)
