@@ -92,6 +92,7 @@ class NewAnalyse(FileSystemEventHandler):
         matrix = np.reshape(image_array, (1088, 1928))
         # raw to tiff
         tiff.imsave('tiff/'+ str(basename(newFile))  + str(numFile) + '.tiff', matrix )
+
         # Dead Pixel
         #for j in range(0,1088)
         #    for i in range(0,1928)
