@@ -14,7 +14,7 @@ import tifffile as tiff
 
 
 import plotly
-plotly.tools.set_credentials_file(username='antoine13', api_key='DZN51FyyaBILK1Ie1InJ')
+plotly.tools.set_credentials_file(username='', api_key='')
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 from plotly.graph_objs import Scatter, Figure, Layout, Histogram
 import plotly.tools as tls
