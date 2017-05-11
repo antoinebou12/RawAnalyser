@@ -211,9 +211,9 @@ class NewAnalyse(FileSystemEventHandler):
             global squareLength
             width = point['gray_last_x']-point['gray_first_x']
             height = point['gray_last_y']-point['gray_first_y']
-            squareLength= (((8*width)/53)-7)
+            squareLength= (((8*width)/53)-5)
             if squareLength != height:
-                print 'camera calibration check please'
+                print colorama.Fore.RED +'camera calibration check please'+ colorama.Fore.RESET
 
             white = [[0 for x in range(squareLength)] for y in range(squareLength)]
             whiteG = [[0 for x in range(squareLength)] for y in range(squareLength)]
