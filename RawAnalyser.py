@@ -6,10 +6,8 @@ from os.path import basename
 
 
 import numpy as np
-import cv2
 from scipy.misc import imsave
 import PIL.Image as Image
-from PIL import *
 import tifffile as tiff
 
 
@@ -91,7 +89,7 @@ class NewAnalyse(FileSystemEventHandler):
         matrix = np.array(matrix)
         matrix = np.reshape(image_array, (1088, 1928))
         # raw to tiff
-        tiff.imsave('tiff/'+ str(basename(newFile))  + str(numFile) + '.tiff', matrix )
+        tiff.imsave('tiff/'+ str(os.path.splitext(basename(newFile))[0])+ ' '  + str(numFile) + '.tiff', matrix )
 
         # Dead Pixel
         #for j in range(0,1088)
@@ -334,11 +332,13 @@ class NewAnalyse(FileSystemEventHandler):
             enablePrint()
             for i in range(0,1928):
                 for j in range(0,1088):
-                    matrixVig[j][i] = float(matrix[j][i] - args.bl)
-            vignetteMatrix = matrixVig/vig
-            vignetteMatrix = vignetteMatrix
-            Image_arrayVig=np.reshape(np.array(vignetteMatrix),(1928*1088,1))
-            tiff.imsave('tiff/' + str(basename(newFile)) + 'vig' + str(numFile) + '.tiff', Image_arrayVig )
+                    matrixVig[j][i] = float(matrix[j][i]- args.bl)
+            vignetteMatrix = np.array(matrixVig)/vig
+            Image_arrayVig = np.reshape(np.array(vignetteMatrix), (1928 * 1088, 1))
+            Image_arrayVig = Image.frombuffer("I", [1928, 1088], Image_arrayVig.astype('I'), 'raw', 'I', 0, 1)
+            imsave('tiff/' + str(os.path.splitext(basename(newFile))[0]) + ' vig' + str(numFile) + '.tiff', Image_arrayVig)
+            #tiff.imsave('tiff/' + str(os.path.splitext(basename(newFile))[0]) + ' vig ' + str(numFile) + '.tiff', vignetteMatrixImage )
+
 
             cropMatrixVig = [[0 for x in range(cols_count)] for y in range(rows_count)]
             for xCrop in range(point['first_x'], point['last_x'], 1):
@@ -486,7 +486,7 @@ class NewAnalyse(FileSystemEventHandler):
             # Convert to plotly figure
             plotly_fig = tls.mpl_to_plotly(fig)
             global numFile
-            py.image.save_as(plotly_fig, 'histogram/'+ str(basename(newFile)) + 'histogram' + str(numFile) + '.png')
+            py.image.save_as(plotly_fig, 'histogram/'+ str(os.path.splitext(basename(newFile))[0]) + ' histogram ' + str(numFile) + '.png')
 
 
 

@@ -1,4 +1,4 @@
-from os.path import basename
+import os
 import tifffile as tiff
 import numpy as np
 import argparse
@@ -15,7 +15,7 @@ def main():
     matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
     matrix = np.array(matrix)
     matrix = np.reshape(image_array, (1088, 1928))
-    tiff.imsave(args.output + '/' + str(basename(args.input)) + '.tiff', matrix )
+    tiff.imsave(args.output + '/' + str(os.path.splitext(args.input)[0]) + '.tiff', matrix )
 def _parser():
     parser = argparse.ArgumentParser(description='.raw file to .tiff file format')
     parser.add_argument("input", type=str, help='input file to check for new raw file')
