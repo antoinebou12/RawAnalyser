@@ -76,7 +76,7 @@ class FormWidget(QWidget):
         self.image.setObjectName("image")
         self.image.mousePressEvent = self.getPos
         self.num = 0
-        self.point = 'first ROI '
+        self.point = 'first ROI'
         self.text = ''
         self.setToolTip(self.text)
         self.feeds = {
@@ -98,16 +98,8 @@ class FormWidget(QWidget):
                 #print position.x()
                 #print position.y()
                 #print ''
-                if ((position.x() % 2 == 0) & (position.y() % 2 == 0)):
-                    self.color = 'blue'
-                elif ((position.x() % 2 == 1) & (position.y() % 2 == 1)):
-                    self.color = 'red'
-                elif ((position.x() % 2 == 0) & (position.y() % 2 == 1)):
-                    self.color = 'green'
-                elif ((position.x() % 2 == 1) & (position.y() % 2 == 0)):
-                    self.color = 'green'
                 self.text = self.point  + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(
-                    matrix[position.y()][position.x()] / 64) + ' color ' + self.color
+                    matrix[position.y()][position.x()] / 64)
                 self.setToolTip(self.text)
         else:
             pass  # do other stuff
@@ -125,28 +117,28 @@ class FormWidget(QWidget):
                 self.feeds['first_x'] = x
                 self.feeds['first_y'] = y
                 self.point = 'last ROI '
-                self.text = self.point + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(matrix[position.y()][position.x()]/64)+ ' color ' + self.color
+                self.text = self.point + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(matrix[position.y()][position.x()]/64)
                 self.setToolTip(self.text)
             elif self.num % 4 == 2:
                 self.feeds['last_x'] = x
                 self.feeds['last_y'] = y
                 self.point = 'first gray '
                 self.text = self.point + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(
-                    matrix[position.y()][position.x()] / 64)+ ' color ' + self.color
+                    matrix[position.y()][position.x()] / 64)
                 self.setToolTip(self.text)
             elif self.num % 4 == 3:
                 self.feeds['gray_first_x'] = x
                 self.feeds['gray_first_y'] = y
                 self.point = 'last gray '
                 self.text = self.point + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(
-                    matrix[position.y()][position.x()] / 64)+ ' color ' + self.color
+                    matrix[position.y()][position.x()] / 64)
                 self.setToolTip(self.text)
             elif self.num % 4 == 0:
                 self.feeds['gray_last_x'] = x
                 self.feeds['gray_last_y'] = y
                 self.point = 'first ROI'
                 self.text = self.point + 'x: ' + str(position.x()) + ' y:' + str(position.y()) + ' value ' + str(
-                    matrix[position.y()][position.x()] / 64)+ ' color ' + self.color
+                    matrix[position.y()][position.x()] / 64)
                 self.setToolTip(self.text)
             json.dump(self.feeds, f)
 

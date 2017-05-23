@@ -21,18 +21,18 @@ def main():
 
 
     # list in text file
-    cols_count = 1928
-    rows_count = 1088
-    image_array = np.fromfile(f, dtype=np.uint16, count=1928 * 1088)
+    cols_count = args.width
+    rows_count = args.height
+    image_array = np.fromfile(f, dtype=np.uint16, count=args.width * args.height)
     # raw to tiff
-    image = Image.frombuffer("I", [1928, 1088], image_array.astype('I'), 'raw', 'I', 0, 1)
+    #image = Image.frombuffer("I", [args.width, args.height], image_array.astype('I'), 'raw', 'I', 0, 1)
     #imsave('tiff/test.tiff', image)
     for item in image_array:
         thefileArray.write("%s\n" % item)
     #Matrix 2d of the image
     matrix = [[0 for x in range(cols_count)] for y in range(rows_count)]
     matrix = np.array(matrix)
-    matrix = np.reshape(image_array, (1088, 1928))
+    matrix = np.reshape(image_array, (args.height, args.width))
     #Write in text file the list
     for item in matrix:
         thefileMatrix.write("%s\n" % item)
@@ -41,21 +41,19 @@ def main():
     ChannelR = [[0 for x in range(cols_count)] for y in range(rows_count)]  # 524416
     ChannelG = [[0 for x in range(cols_count)] for y in range(rows_count)]  # 1048832
 
-    for i in range(0, 1928, 2):
-        for j in range(0, 1028, 2):
+    for i in range(0, args.width, 2):
+        for j in range(0, args.height, 2):
             ChannelB[j][i] = matrix[j][i]
-
-
-    for i in range(1, 1928, 2):
-        for j in range(0, 1028, 2):
+    for i in range(1, args.width, 2):
+        for j in range(0, args.height, 2):
             ChannelG[j][i] = matrix[j][i]
 
-    for i in range(0, 1928, 2):
-        for j in range(1, 1028, 2):
+    for i in range(0, args.width, 2):
+        for j in range(1, args.height, 2):
             ChannelG[j][i] = matrix[j][i]
 
-    for i in range(1, 1928, 2):
-        for j in range(1, 1028, 2):
+    for i in range(1, args.width, 2):
+        for j in range(1, args.height, 2):
             ChannelR[j][i] = matrix[j][i]
     #Write in text file the list
     for item in ChannelB:
@@ -92,6 +90,8 @@ def _parser():
     parser.add_argument("input", type=str, help='input raw file')
     parser.add_argument("x", type=int, help='Position in x')
     parser.add_argument("y", type=int, help='Position in y')
+    parser.add_argument("--width",default=5184, type=int, help='width of the picture')
+    parser.add_argument("--height",default=3904, type=int, help='height of the picture')
     parser.add_argument("--bitdepth", type=int, default=16, help='bit depth 16 or 10 or 8')
 
     return parser
