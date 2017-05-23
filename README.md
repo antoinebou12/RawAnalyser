@@ -40,6 +40,9 @@ Image selection GUI for the region of interest and for the gray patches in a raw
 Check for new file in the raw folder
 ### RawPixel.py
 Check for the value of the pixel and the color with the bayer pattern
+### 20MPto5MP.py
+Converstion of the 20megapixel to 5megapixel pixel image for the new sensor
+OV20880 = Camera('OV20880', ImageType.BINARY16U, shape=(3904, 5184), depth=2 ** 10 - 1, bayer='bbggbbggbbggbbggggrrggrrggrrggrr')
 #### Camera
 	Camera: OV2740
 	Resolution: (1088, 1928)
