@@ -1,0 +1,10 @@
+numpy
+scipy
+pyqt5
+argparse
+argcomplete
+watchdog
+logging
+colorama
+plotly
+matplotlib
